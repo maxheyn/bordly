@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Londrina+Sketch&display=swap');
+@import 'tailwindcss';
+
+/* https://tailwindcss.com/docs/detecting-classes-in-source-files#safelisting-with-ranges */
+@source inline("grid-cols-{3..12}");
+
+@theme {
+    --font-chewy: 'Chewy', 'cursive';
+
+    --color-mint-green: rgb(190, 233, 232);
+    --color-moonstone: rgb(98, 182, 203);
+    --color-indigo-dye: rgb(27, 73, 101);
+    --color-columbia-blue: rgb(202, 233, 255);
+    --color-picton-blue: rgb(95, 168, 211);
+}
+
+@layer components {
+    input,
+    select {
+        @apply border border-indigo-dye rounded-md p-1;
+    }
+
+    button {
+        @apply cursor-pointer;
+    }
+}

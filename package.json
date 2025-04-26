@@ -17,7 +17,13 @@
     "fix": "npm run type-check && npm run lint && npm run format"
   },
   "dependencies": {
+    "@iconify/vue": "^4.3.0",
+    "@tailwindcss/vite": "^4.1.3",
+    "canvas-confetti": "^1.9.3",
+    "material-symbols": "^0.31.0",
     "pinia": "^3.0.1",
+    "reka-ui": "^2.2.0",
+    "textfit": "^2.4.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
@@ -30,6 +36,7 @@
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.22.0",
     "eslint-plugin-oxlint": "^0.16.0",
     "eslint-plugin-vue": "~10.0.0",
@@ -37,7 +44,9 @@
     "jsdom": "^26.0.0",
     "npm-run-all2": "^7.0.2",
     "oxlint": "^0.16.0",
+    "postcss": "^8.5.3",
     "prettier": "3.5.3",
+    "tailwindcss": "^4.1.3",
     "typescript": "~5.8.0",
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
