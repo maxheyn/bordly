@@ -53,7 +53,7 @@ onBeforeMount(() => {
 <template>
     <DialogRoot v-model:open="isOpen" class="overflow-none">
         <DialogTrigger
-            class="px-3 py-2 text-lg whitespace-nowrap flex items-center bg-indigo-dye text-white hover:shadow-md hover:scale-[103%] duration-100 w-fit rounded-xl hover:shadow-gray-500"
+            class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye text-white hover:shadow-md hover:scale-[103%] duration-100 max-md:w-full w-fit rounded-xl hover:shadow-gray-500"
         >
             <Icon icon="lucide:pencil" class="mr-2" />
             Update Board&hellip;
@@ -62,7 +62,7 @@ onBeforeMount(() => {
         <DialogPortal>
             <DialogOverlay class="bg-gray-950/80 fixed inset-0 z-30" />
             <DialogContent
-                class="fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[950px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 z-9999"
+                class="fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[950px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 z-9999 overflow-y-scroll"
             >
                 <DialogTitle class="text-indigo-dye m-0 text-4xl font-semibold">
                     Update Board

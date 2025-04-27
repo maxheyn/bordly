@@ -35,7 +35,7 @@ const { fontSize } = useAutoFontSize(containerRef, textRef, {
     >
         <span
             ref="containerRef"
-            class="text-indigo-dye overflow-hidden rounded-xl hover:-translate-1 hover:shadow-[10px_10px_3px_0px_rgba(0,_0,_0,_0.1)] transition duration-200 flex items-center justify-center text-center bg-mint-green aspect-square w-full p-[7.5%] cursor-pointer min-h-fit max-h-min"
+            class="text-indigo-dye overflow-hidden max-sm:rounded-md rounded-xl hover:-translate-1 hover:shadow-[10px_10px_3px_0px_rgba(0,_0,_0,_0.1)] transition duration-200 flex items-center justify-center text-center bg-mint-green aspect-square w-full p-[7.5%] cursor-pointer min-h-fit max-h-min"
             :class="{
                 'opacity-20': checked && !searchMatches,
                 'opacity-20 !text-gray-800': !(checked || searchMatches),

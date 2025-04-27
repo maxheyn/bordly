@@ -168,11 +168,11 @@ watch(victoryResults, (newWins, oldWins) => {
 
 <template>
     <div class="relative flex flex-col max-md:p-6">
-        <div class="flex justify-between items-end px-8 mt-4">
-            <div class="inline-flex items-end gap-x-3 w-1/3">
+        <div class="flex max-md:flex-col justify-between items-end px-8 mt-4 gap-y-4">
+            <div class="flex md:items-end gap-x-3 max-md:w-full w-1/3">
                 <button
                     type="button"
-                    class="px-3 py-2 text-lg whitespace-nowrap flex items-center bg-indigo-dye disabled:cursor-default disabled:bg-indigo-dye/70 text-white hover:shadow-md hover:scale-[103%] duration-100 w-fit rounded-xl hover:shadow-gray-500"
+                    class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye disabled:cursor-default disabled:bg-indigo-dye/70 text-white hover:shadow-md hover:scale-[103%] duration-100 max-md:w-full w-fit rounded-xl hover:shadow-gray-500"
                     @click="randomizeBoard"
                     :disabled="isRandomizing"
                 >
@@ -183,10 +183,10 @@ watch(victoryResults, (newWins, oldWins) => {
                 <BingoOptionsDialog v-model:selected-goals="selectedGoals" :all-goals="allGoals" />
             </div>
 
-            <div class="flex justify-center text-white font-chewy w-1/3">
-                <div class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3">
+            <div class="flex justify-center text-white font-chewy max-md:w-full w-1/3">
+                <div class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 max-md:w-full justify-evenly">
                     <button
-                        class="p-3 hover:bg-mint-green/30 disabled:hover:bg-mint-green/10 rounded-xl disabled:cursor-not-allowed"
+                        class="p-3 text-lg max-md:text-sm hover:bg-mint-green/30 disabled:hover:bg-mint-green/10 rounded-xl disabled:cursor-not-allowed"
                         @click="gridSize = Math.max(3, gridSize - 1)"
                         :disabled="gridSize <= 3"
                     >
@@ -208,11 +208,11 @@ watch(victoryResults, (newWins, oldWins) => {
                 v-model="search"
                 type="text"
                 placeholder="Search the board..."
-                class="border h-fit w-1/3 py-1.5 px-3 rounded-lg"
+                class="border h-fit w-1/3 py-1.5 px-3 rounded-lg max-md:w-full"
             />
         </div>
 
-        <div class="grid items-center gap-4 px-8 pb-8 pt-3" :class="gridClass">
+        <div class="grid items-center max-md:gap-1 gap-4 px-8 pb-8 max-md:pt-8 md:pt-3" :class="gridClass">
             <BingoTile
                 v-for="(text, idx) in displayGoals"
                 :key="text + idx"

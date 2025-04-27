@@ -24,16 +24,16 @@ function handleDeleteGoal(idx: number) {
             }}
             of {{ allGoals?.length ?? 0 }})
             </span>
-            <div class="flex">
+            <div class="flex max-md:flex-col gap-x-2">
                 <span
                     @click="queuedSelectedGoals = [...allGoals!]"
-                    class="cursor-pointer mr-1 hover:text-blue-700 text-blue-500 hover:underline"
+                    class="cursor-pointer  hover:text-blue-700 text-blue-500 hover:underline whitespace-nowrap"
                 >
                     Select all
                 </span>
                 <span
                     @click="queuedSelectedGoals = []"
-                    class="cursor-pointer ml-1 hover:text-blue-700 text-blue-500 hover:underline"
+                    class="cursor-pointer hover:text-blue-700 text-blue-500 hover:underline whitespace-nowrap"
                 >
                     Deselect all
                 </span>
