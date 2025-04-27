@@ -23,7 +23,7 @@ const textRef = ref<HTMLParagraphElement | null>(null)
 
 const { fontSize } = useAutoFontSize(containerRef, textRef, {
     maxSize: 48,
-    minSize: 8,
+    minSize: 2,
     step: 1,
 })
 </script>
