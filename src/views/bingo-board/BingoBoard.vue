@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import BingoTile from './BingoTile.vue'
-import { EXAMPLE_BINGO } from '@/data.ts'
-import { computed, onMounted, type Ref, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import BingoOptionsDialog from './BingoOptionsDialog.vue'
 import { create as createConfetti } from 'canvas-confetti'
 import { Icon } from '@iconify/vue'
-import { DialogTrigger } from "reka-ui";
 
 const RANDOMIZE_LOADING_DURATION_SECONDS = 0.7
 
@@ -184,7 +182,9 @@ watch(victoryResults, (newWins, oldWins) => {
             </div>
 
             <div class="flex justify-center text-white font-chewy max-md:w-full w-1/3">
-                <div class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 max-md:w-full justify-evenly">
+                <div
+                    class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 max-md:w-full justify-evenly"
+                >
                     <button
                         class="p-3 text-lg max-md:text-sm hover:bg-mint-green/30 disabled:hover:bg-mint-green/10 rounded-xl disabled:cursor-not-allowed"
                         @click="gridSize = Math.max(3, gridSize - 1)"
@@ -212,7 +212,10 @@ watch(victoryResults, (newWins, oldWins) => {
             />
         </div>
 
-        <div class="grid items-center max-md:gap-1 gap-4 px-8 pb-8 max-md:pt-8 md:pt-3" :class="gridClass">
+        <div
+            class="grid items-center max-md:gap-1 gap-4 px-8 pb-8 max-md:pt-8 md:pt-3"
+            :class="gridClass"
+        >
             <BingoTile
                 v-for="(text, idx) in displayGoals"
                 :key="text + idx"

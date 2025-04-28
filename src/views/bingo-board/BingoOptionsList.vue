@@ -36,12 +36,12 @@ onMounted(() => {
                 'rounded-b-lg': idx === allGoals.length - 1,
             }"
         >
-            <span class="flex-1 ">{{ item || '(empty)' }}</span>
+            <span class="flex-1">{{ item || '(empty)' }}</span>
             <button
                 class="flex items-center cursor-pointer py-1 px-2 rounded-full hover:bg-indigo-dye/20"
                 @click.stop.prevent="emit('deleteGoal', idx)"
             >
-                <Icon icon="lucide:trash-2" class="mr-1"/>
+                <Icon icon="lucide:trash-2" class="mr-1" />
                 Remove
             </button>
         </ListboxItem>

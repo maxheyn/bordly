@@ -19,15 +19,15 @@ function handleDeleteGoal(idx: number) {
     <div class="flex flex-col gap-y-2">
         <div class="flex justify-between">
             <span class="font-medium text-indigo-dye">
-            Select your options… ({{
-                queuedSelectedGoals?.filter((g) => allGoals?.includes(g))?.length ?? 0
-            }}
-            of {{ allGoals?.length ?? 0 }})
+                Select your options… ({{
+                    queuedSelectedGoals?.filter((g) => allGoals?.includes(g))?.length ?? 0
+                }}
+                of {{ allGoals?.length ?? 0 }})
             </span>
             <div class="flex max-md:flex-col gap-x-2">
                 <span
                     @click="queuedSelectedGoals = [...allGoals!]"
-                    class="cursor-pointer  hover:text-blue-700 text-blue-500 hover:underline whitespace-nowrap"
+                    class="cursor-pointer hover:text-blue-700 text-blue-500 hover:underline whitespace-nowrap"
                 >
                     Select all
                 </span>

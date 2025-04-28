@@ -69,7 +69,7 @@ onBeforeMount(() => {
                 </DialogTitle>
 
                 <DialogDescription class="text-indigo-dye mt-[10px] mb-5 font-medium">
-                    Add, remove, and select the available goals for the bingo board.<br>
+                    Add, remove, and select the available goals for the bingo board.<br />
                     Any selected goals will included when randomizing.
                 </DialogDescription>
 
