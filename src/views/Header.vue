@@ -11,7 +11,7 @@
             <a
                 href="https://ko-fi.com/H2H297Z74"
                 target="_blank"
-                class="max-md:left-1/2 bottom-[-90.5vh] max-md:-translate-x-1/2 absolute md:top-1/2 -translate-y-1/2 md:right-[2rem]"
+                class="max-md:left-1/2 max-md:bottom-[-90.5vh] max-md:-translate-x-1/2 absolute md:top-1/2 -translate-y-1/2 md:right-[2rem]"
             >
                 <img
                     height="36"
