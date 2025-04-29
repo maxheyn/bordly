@@ -15,17 +15,19 @@ const gridClass = computed(() => `grid-cols-${gridSize.value}`)
 const allGoals = ref<string[]>([])
 const selectedGoals = ref<string[]>([])
 const displayGoals = computed(() => {
-    const slice = selectedGoals.value.slice(0, totalTilesCount.value)
-    while (slice.length < totalTilesCount.value) slice.push('')
-    return slice
+    const goals = selectedGoals.value.slice(0, totalTilesCount.value)
+    return [...goals, ...Array(Math.max(0, totalTilesCount.value - goals.length)).fill('')]
 })
+
 const search = ref<string>()
 
 const isRandomizing = ref(false)
 const tileDelays = ref<Record<string, number>>({})
+
 function randomizeBoard() {
     isRandomizing.value = true
     const jitter = 0.3
+
     tileDelays.value = Object.fromEntries(
         selectedGoals.value.map((goal) => [
             goal,
@@ -33,12 +35,16 @@ function randomizeBoard() {
         ]),
     )
     const maxDelay = Math.max(...Object.values(tileDelays.value))
+
     setTimeout(() => {
-        const array = selectedGoals.value
+        const array = [...selectedGoals.value]
+
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
             ;[array[i], array[j]] = [array[j], array[i]]
         }
+
+        selectedGoals.value = array
         isRandomizing.value = false
     }, maxDelay * 1000)
 
@@ -87,8 +93,11 @@ watch(
     allGoals,
     (val) => {
         if (viewingSharedBoard.value) return
-        localStorage.setItem('bordly_bingoAllGoals', JSON.stringify(val))
-        selectedGoals.value = selectedGoals.value.filter((g) => val.includes(g))
+
+        const stringified = val.map(String)
+
+        localStorage.setItem('bordly_bingoAllGoals', JSON.stringify(stringified))
+        selectedGoals.value = selectedGoals.value.filter((g) => stringified.includes(String(g)))
     },
     { deep: true },
 )
@@ -97,7 +106,10 @@ watch(
     selectedGoals,
     (val) => {
         if (viewingSharedBoard.value) return
-        localStorage.setItem('bordly_bingoSelectedGoals', JSON.stringify(val))
+
+        const stringified = val.map(String)
+
+        localStorage.setItem('bordly_bingoSelectedGoals', JSON.stringify(stringified))
     },
     { deep: true },
 )
