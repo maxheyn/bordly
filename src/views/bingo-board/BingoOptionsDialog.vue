@@ -62,7 +62,7 @@ onBeforeMount(() => {
         <DialogPortal>
             <DialogOverlay class="bg-gray-950/80 fixed inset-0 z-30" />
             <DialogContent
-                class="fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[950px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 z-9999 overflow-y-scroll"
+                class="fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[950px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 z-9999 overflow-y-auto"
             >
                 <DialogTitle class="text-indigo-dye m-0 text-4xl font-semibold">
                     Update Board
