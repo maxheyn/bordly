@@ -4,6 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import BingoOptionsDialog from './BingoOptionsDialog.vue'
 import { create as createConfetti } from 'canvas-confetti'
 import { Icon } from '@iconify/vue'
+import pako from 'pako'
 
 const RANDOMIZE_LOADING_DURATION_SECONDS = 0.7
 
@@ -85,6 +86,7 @@ watch(
 watch(
     allGoals,
     (val) => {
+        if (viewingSharedBoard.value) return
         localStorage.setItem('bordly_bingoAllGoals', JSON.stringify(val))
         selectedGoals.value = selectedGoals.value.filter((g) => val.includes(g))
     },
@@ -94,6 +96,7 @@ watch(
 watch(
     selectedGoals,
     (val) => {
+        if (viewingSharedBoard.value) return
         localStorage.setItem('bordly_bingoSelectedGoals', JSON.stringify(val))
     },
     { deep: true },
@@ -104,17 +107,63 @@ watch(gridSize, (val) => {
     victoryResults.value = []
 })
 
+const viewingSharedBoard = ref(false)
+
 onMounted(() => {
-    const storedAll = localStorage.getItem('bordly_bingoAllGoals')
-    allGoals.value = storedAll ? JSON.parse(storedAll) : []
-    const storedSel = localStorage.getItem('bordly_bingoSelectedGoals')
-    selectedGoals.value = storedSel ? JSON.parse(storedSel) : [...allGoals.value]
-    selectedGoals.value = selectedGoals.value.filter((g) => allGoals.value.includes(g))
+    const urlParams = new URLSearchParams(window.location.search)
+    const sharedBoard = urlParams.get('board')
+
+    let useLocalStorage = false
+
+    // Check for a "shared" link first, otherwise use localStorage
+    if (sharedBoard) {
+        viewingSharedBoard.value = true
+
+        try {
+            const padded = sharedBoard.replace(/-/g, '+').replace(/_/g, '/')
+            const binaryString = atob(padded)
+            const byteArray = Uint8Array.from(binaryString, (c) => c.charCodeAt(0))
+            const decompressed = pako.inflate(byteArray, { to: 'string' })
+            const decoded = JSON.parse(decompressed)
+
+            if (Array.isArray(decoded)) {
+                allGoals.value = decoded
+                selectedGoals.value = [...decoded]
+            }
+        } catch (e) {
+            console.error('Failed to load board from url, returning to stored board.', e)
+            useLocalStorage = true
+        }
+    }
+
+    if (!sharedBoard || useLocalStorage) {
+        const storedAll = localStorage.getItem('bordly_bingoAllGoals')
+        allGoals.value = storedAll ? JSON.parse(storedAll) : []
+        const storedSel = localStorage.getItem('bordly_bingoSelectedGoals')
+        selectedGoals.value = storedSel ? JSON.parse(storedSel) : [...allGoals.value]
+        selectedGoals.value = selectedGoals.value.filter((g) => allGoals.value.includes(g))
+    }
 
     if (confettiCanvas.value) {
         confetti = createConfetti(confettiCanvas.value, { resize: true })
     }
 })
+
+const encodedGoals = computed(() => {
+    if (!selectedGoals.value.length) return null
+
+    const json = JSON.stringify(selectedGoals.value)
+    const compressed = pako.deflate(json, { level: 9 })
+    const base64 = btoa(String.fromCharCode(...compressed))
+
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+})
+
+async function copyShareLink() {
+    const link = `${location.origin}${location.pathname}?board=${encodedGoals.value}`
+    await navigator.clipboard.writeText(link)
+    alert('Share link copied to clipboard.')
+}
 
 const confettiCanvas = ref<HTMLCanvasElement | null>(null)
 let confetti: ReturnType<typeof createConfetti>
@@ -166,24 +215,13 @@ watch(victoryResults, (newWins, oldWins) => {
 
 <template>
     <div class="relative flex flex-col max-md:p-6">
-        <div class="flex max-md:flex-col justify-between items-end px-8 mt-4 gap-y-4">
-            <div class="flex md:items-end gap-x-3 max-md:w-full w-1/3">
-                <button
-                    type="button"
-                    class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye disabled:cursor-default disabled:bg-indigo-dye/70 text-white hover:shadow-md hover:scale-[103%] duration-100 max-md:w-full w-fit rounded-xl hover:shadow-gray-500"
-                    @click="randomizeBoard"
-                    :disabled="isRandomizing"
-                >
-                    <Icon icon="lucide:shuffle" class="mr-2" />
-                    Randomize Board
-                </button>
-
-                <BingoOptionsDialog v-model:selected-goals="selectedGoals" :all-goals="allGoals" />
-            </div>
-
-            <div class="flex justify-center text-white font-chewy max-md:w-full w-1/3">
+        <div class="flex max-md:flex-col justify-between px-8 md:mt-4 gap-y-4">
+            <!-- Grid Switcher -->
+            <div
+                class="flex justify-center text-white font-chewy max-md:w-full w-1/3 whitespace-nowrap order-1"
+            >
                 <div
-                    class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 max-md:w-full justify-evenly"
+                    class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 justify-evenly"
                 >
                     <button
                         class="p-3 text-lg max-md:text-sm hover:bg-mint-green/30 disabled:hover:bg-mint-green/10 rounded-xl disabled:cursor-not-allowed"
@@ -192,7 +230,7 @@ watch(victoryResults, (newWins, oldWins) => {
                     >
                         <Icon icon="lucide:minus" />
                     </button>
-                    <p class="text-xl">{{ gridSize }} x {{ gridSize }}</p>
+                    <p class="text-xl">{{ gridSize }} &times; {{ gridSize }}</p>
 
                     <button
                         class="p-3 hover:bg-mint-green/30 disabled:hover:bg-mint-green/10 rounded-xl disabled:cursor-not-allowed"
@@ -204,11 +242,35 @@ watch(victoryResults, (newWins, oldWins) => {
                 </div>
             </div>
 
+            <!-- Buttons Section -->
+            <div class="flex flex-wrap justify-center gap-3 w-full order-2 md:order-1">
+                <BingoOptionsDialog v-model:selected-goals="selectedGoals" :all-goals="allGoals" />
+
+                <button
+                    type="button"
+                    class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye disabled:cursor-default disabled:bg-indigo-dye/70 text-white hover:shadow-md hover:scale-[103%] duration-100 w-fit rounded-xl hover:shadow-gray-500"
+                    @click="randomizeBoard"
+                    :disabled="isRandomizing"
+                >
+                    <Icon icon="lucide:shuffle" class="mr-2" />
+                    Shuffle
+                </button>
+
+                <button
+                    type="button"
+                    class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye disabled:cursor-default disabled:bg-indigo-dye/70 text-white hover:shadow-md hover:scale-[103%] duration-100 w-fit rounded-xl hover:shadow-gray-500"
+                    @click="copyShareLink"
+                >
+                    <Icon icon="lucide:link" class="mr-2" />
+                    Share
+                </button>
+            </div>
+
             <input
                 v-model="search"
                 type="text"
                 placeholder="Search the board..."
-                class="border h-fit w-1/3 py-1.5 px-3 rounded-lg max-md:w-full"
+                class="border h-fit w-1/3 py-1.5 px-3 rounded-lg max-md:w-full order-3"
             />
         </div>
 

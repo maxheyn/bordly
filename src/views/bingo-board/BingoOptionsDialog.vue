@@ -53,10 +53,10 @@ onBeforeMount(() => {
 <template>
     <DialogRoot v-model:open="isOpen" class="overflow-none">
         <DialogTrigger
-            class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye text-white hover:shadow-md hover:scale-[103%] duration-100 max-md:w-full w-fit rounded-xl hover:shadow-gray-500"
+            class="px-3 py-2 max-md:text-sm text-lg justify-center whitespace-nowrap flex items-center bg-indigo-dye text-white hover:shadow-md hover:scale-[103%] duration-100 w-fit rounded-xl hover:shadow-gray-500"
         >
             <Icon icon="lucide:pencil" class="mr-2" />
-            Update Board&hellip;
+            Update
         </DialogTrigger>
 
         <DialogPortal>

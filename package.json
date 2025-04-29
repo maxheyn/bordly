@@ -24,6 +24,7 @@
     "@tailwindcss/vite": "^4.1.3",
     "canvas-confetti": "^1.9.3",
     "material-symbols": "^0.31.0",
+    "pako": "^2.1.0",
     "pinia": "^3.0.1",
     "reka-ui": "^2.2.0",
     "textfit": "^2.4.0",
