@@ -230,7 +230,7 @@ watch(victoryResults, (newWins, oldWins) => {
         <div class="flex max-md:flex-col justify-between px-8 md:mt-4 gap-y-4">
             <!-- Grid Switcher -->
             <div
-                class="flex justify-center text-white font-chewy max-md:w-full w-1/3 whitespace-nowrap order-1"
+                class="flex max-md:justify-center text-white font-chewy max-md:w-full w-1/3 whitespace-nowrap order-1"
             >
                 <div
                     class="flex items-center bg-indigo-dye w-fit rounded-xl px-3 gap-x-3 justify-evenly"
